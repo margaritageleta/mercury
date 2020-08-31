@@ -17,29 +17,69 @@
             window.onload = () => {
                 $("#btnPrint").click(function () {
                     console.log("Hi");
-                    var pdf = new jsPDF('p','pt','a4');
+                    var pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
                     pdf.addHTML(document.body,function() {
                         pdf.save('web.pdf');
                     });
                     console.log("Done");
                 });
+                
+                $("#scale-doc").on("input change", function() {
+                    document.getElementById('pages-wrapper').style.transform = "scale("+$('#scale-doc').val()/100+")";
+                    
+                    var pagesWrapper = document.querySelector('#pages-wrapper');
+
+                    console.log(pagesWrapper.getBoundingClientRect().width);
+                    console.log($("#table").outerWidth());
+
+                    if (pagesWrapper.getBoundingClientRect().width > $("#table").outerWidth() ) {
+                        console.log("OVERFLOW");
+                        $("#table").css('justify-content','flex-start'); 
+                    }
+                    else {
+                        $("#table").css('justify-content','center'); 
+                    }
+                    if (pagesWrapper.getBoundingClientRect().height > $("#table").outerHeight() ) {
+                        console.log("OVERFLOW");
+                        $("#table").css('align-items','flex-start'); 
+                    }
+                    else {
+                        $("#table").css('align-items','center'); 
+                    }
+                });
             }
+
         </script>
     </head>
 
     <body>
         <main>
-            <nav>
-                <h1>Mercury Notes</h1>
-            </nav>
-            <section>
-                <p>Bye</p>
-                <input id="btnPrint" type="button" value="Print Div Contents"/>
-            </section>
+            <div>
+                <nav>
+                    <h1>Mercury Notes</h1>
+                </nav>
+                <section>
+                    <p>Bye</p>
+                    <input type="range" id="scale-doc" name="scale-doc" 
+         min="1" max="100" value="10" step="1">
+                    <input id="btnPrint" type="button" value="Print Div Contents"/>
+                </section>
+            </div>
+            <div id="table">
+                <div id= "pages-wrapper" class="pages-wrapper">
+                    <section id="pages">
+        
+                    </section>   
+                </div>    
+    
+    
+    
+                {# {% block content %}{% endblock %} #}
+            </div> 
         </main>
-        <main id="dvContainer">
-            <p>Hi</p>
-            {% block content %}{% endblock %}
-        </main> 
     </body>
 </html>
