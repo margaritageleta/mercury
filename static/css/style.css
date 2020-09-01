@@ -36,10 +36,11 @@ main > div:last-child {
     margin: auto;
 
     transition: justify-content align-items 0.5s ease;
+    background: #e9d2b0 url(/img/wood.png) repeat;
 }
 
 .pages-wrapper {
-    background-color: lightgreen;
+    /*background-color: lightgreen;*/
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -64,7 +65,7 @@ main > div:last-child {
 
 .page {
     width: 225pt;
-    height: 325pt;
+    height: 330pt;
     background-color: ghostwhite;
     border: solid black 1px;
     /*margin-top: 20px;
@@ -85,12 +86,12 @@ main > div:last-child {
     flex-wrap: wrap;
 }
 
-.effect2
-{
+.page-wrapper {
   position: relative;
+  width: max-content;
+  height: max-content;
 }
-.effect2:before, .effect2:after
-{
+.page-wrapper:before, .page-wrapper:after {
   z-index: -1;
   position: absolute;
   content: "";
@@ -109,8 +110,7 @@ main > div:last-child {
   -ms-transform: rotate(-3deg);
   transform: rotate(-3deg);
 }
-.effect2:after
-{
+.page-wrapper:after {
   -webkit-transform: rotate(3deg);
   -moz-transform: rotate(3deg);
   -o-transform: rotate(3deg);
