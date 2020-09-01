@@ -100,6 +100,7 @@ main > div:first-child {
     font-family: 'Roboto', sans-serif;
     /*border: 1px solid #E8E8EF;*/
     box-shadow: 0 0 25px rgba(5,5,38,0.1);
+    overflow: scroll;
 }
 
 main > div:last-child {
@@ -211,7 +212,6 @@ main > div:last-child p {
 .row-widget {
     width: 100%;
     height: max-content;
-    background-color: moccasin;
 }
 
 .row-widget-controller {
@@ -254,10 +254,10 @@ main > div:last-child p {
 
 textarea {
     width: 100%;
-    height: 120px;
+    height: 100%;
     resize: none;
     background-color: transparent;
-    font-size: 18px;
+    font-size: 12px;
     font-family: 'Roboto', sans-serif;
 
     border-style: none;
@@ -278,7 +278,6 @@ textarea {
     grid-column-end: end;
     grid-row-start: ini;
     grid-row-end: end;
-    background-color: lightblue;
     border-radius: 8px;
     box-shadow: 0 0 25px rgba(5,5,38,0.1);
     border: 1px solid #E8E8EF;
@@ -293,7 +292,6 @@ textarea {
     grid-column-end: end;
     grid-row-start: ini;
     grid-row-end: end;
-    background-color: rgb(200, 230, 173);
 }
 
 .text-controller-options {
@@ -303,7 +301,6 @@ textarea {
 }
 
 .text-style-options {
-    background-color: lightyellow;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -325,6 +322,11 @@ textarea {
 
 input[name="scale-text"] {
     width: 100%;
+}
+
+.widgets-controllers-container {
+    display: flex; 
+    flex-direction: column;
 }
 
 p, h1 {
