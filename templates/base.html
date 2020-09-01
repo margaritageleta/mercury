@@ -11,7 +11,8 @@
         <link rel="stylesheet" type="text/css" href="/css/fonts.css">
         <link rel="stylesheet" type="text/css" href="/css/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Gayathri:wght@100;400;700&display=swap" rel="stylesheet"> 
-
+        <link href="https://fonts.googleapis.com/css2?family=Gayathri:wght@100;400;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" 
         integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
         crossorigin="anonymous"></script>
@@ -20,6 +21,7 @@
         <script type="text/javascript">
             window.onload = () => {
                 var rowWidgetsCounter = 1;
+                var textWidgetsCounter = 1;
                 document.getElementById('pages-wrapper').style.transform = "scale("+80/100+")";
                 $("#btn_pdf").click(function () {
                     async function capture() {
@@ -129,13 +131,25 @@
                     const widgetController = document.createElement('div');
                     widgetController.setAttribute("id", "row-widget-controller-" + rowWidgetsCounter);
                     widgetController.className = 'row-widget-controller';
-                    widgetController.innerHTML = `<div class='row-widget-controller'><div>
+                    widgetController.innerHTML = `<div>
+                        <div>
                             <div>
                                 <div class='controller-menu'>
                                     <div>
                                         <h1>Row widget #`+rowWidgetsCounter+`</h1>
                                     </div>
                                     <input id='btn-remove-row-`+(rowWidgetsCounter++)+`' type='button' value='Remove widget'/>
+                                </div>
+                                <div class="controller-options">
+                                    <div>
+                                        
+                                    </div>
+                                    <textarea 
+                                        id="text-widget-`+(textWidgetsCounter++)+`" 
+                                        name="text" 
+                                        placeholder="Type here widget text"
+                                        rows="4"
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -160,6 +174,14 @@
                 $(document).on('click', 'input[id^="btn-remove-row-"]', function() {
                     console.log(this.id);
                     removeRow(this.id.match(/\d+$/i));
+                });
+
+                $(document).on('input', 'textarea[id^="text-widget-"]', function() {
+                    console.log(this.id);
+                    var text = document.getElementById(this.id).value;
+                    console.log(text);
+                    // Get the predicted val from backend
+                    $('#row-widget-' + this.id.match(/\d+$/i)).text(text);
                 });
 
 /*
@@ -209,6 +231,15 @@
                                         <h1>Mercury Notes</h1>
                                     </div>
                                     <input id="btn-remove-row" type="button" value="Remove widget"/>
+                                </div>
+                                <div class="controller-options">
+                                    <div>
+
+                                    </div>
+                                    <textarea id="input_1" name="text" 
+                                        placeholder="Type here widget text"
+                                        rows="4"
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
