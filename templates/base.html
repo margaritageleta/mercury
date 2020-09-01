@@ -10,7 +10,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <link rel="stylesheet" type="text/css" href="/css/fonts.css">
         <link rel="stylesheet" type="text/css" href="/css/style.css">
-        
+        <link href="https://fonts.googleapis.com/css2?family=Gayathri:wght@100;400;700&display=swap" rel="stylesheet"> 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" 
         integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
@@ -19,9 +19,9 @@
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script type="text/javascript">
             window.onload = () => {
-                document.getElementById('pages-wrapper').style.transform = "scale("+$('#scale-doc').val()/100+")";
+                document.getElementById('pages-wrapper').style.transform = "scale("+80/100+")";
                 // https://stackoverflow.com/questions/29166163/jspdf-addhtml-exporting-low-quality-image-to-pdf
-                $("#btnPrint").click(function () {
+                $("#btn_pdf").click(function () {
                     console.log("Hi");
                     /*var pdf = new jsPDF({
                         orientation: 'p',
@@ -44,7 +44,7 @@
                         var canvasPages = []
                         const promise = new Promise((resolve, reject) => {
                             console.log("Inside");
-                            for (i = 1; i < 3; i++) {
+                            for (i = 1; i < 2; i++) {
                                 /* Scale the wrapper to reset resolution pt */
                                 var initialScale = 1;
                                 $('#pages-wrapper').css({
@@ -64,7 +64,7 @@
                             }
                             (function wait4Pages(){
                                 console.log(canvasPages.length);
-                                if (canvasPages.length == 2) return resolve(canvasPages);
+                                if (canvasPages.length == 1) return resolve(canvasPages);
                                 setTimeout(wait4Pages, 30);
                             })();
                         });
@@ -81,8 +81,8 @@
 
                     (async () => {
                         if(await waitingForPages()) {
-                            doc.addImage(canvasPages[1], 'PNG', 0, 0, 210, 297);
-                            doc.addPage();
+                            //doc.addImage(canvasPages[1], 'PNG', 0, 0, 210, 297);
+                            //doc.addPage();
                             doc.addImage(canvasPages[0], 'PNG', 0, 0, 210, 297);
                             console.log("DOC SAVE");
                             doc.save("file.pdf");
@@ -123,6 +123,10 @@
                         $("#table").css('justify-content','center'); 
                     }
                 });
+                $("#margin-slider").on("input change", function() {
+                    var newMargin = $('#margin-slider').val();
+                    document.documentElement.style.setProperty('--margin', newMargin + 'pt');
+                });
             }
 
         </script>
@@ -132,13 +136,18 @@
         <main>
             <div>
                 <nav>
-                    <h1>Mercury Notes</h1>
+                    <div class="content__nav">
+                        <div class="title__nav">
+                            <h1>Mercury Notes</h1>
+                        </div>
+                        <input id="btn_pdf" type="button" value="Print Div Contents"/>
+                    </div>
+                    
                 </nav>
                 <section>
-                    <p>Bye</p>
-                    <input type="range" id="scale-doc" name="scale-doc" 
-         min="1" max="200" value="37" step="1">
-                    <input id="btnPrint" type="button" value="Print Div Contents"/>
+                    <input type="range" id="scale-doc" name="scale-doc" min="40" max="200" value="80" step="1">
+                    <input type="range" id="margin-slider" name="margin-slider" min="0" max="40" value="20" step="1">
+
                 </section>
             </div>
             <div id="table">
@@ -146,20 +155,25 @@
                     <section id="pages">
                         <div class="page-wrapper">
                             <div id="page_1" class="page">
-                                <h1>Compressing objects: 100% (7/7), done</h1>
-                                <h3>Enumerating objects: 15, done</h3>
-                                <div><p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-                                    The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p></div>
-                                    <img src="/img/camilo.jpg" alt="Phones" width="200px" height="auto"> 
+                                <div id="content__page_1" class="content__page">
+                                    <div>
+                                        <p>
+                                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+                                        </p>
+                                    </div>   
+                                </div>
                             </div>
                         </div>
                         <br>
-                        <div class="page-wrapper">
+                        <!--<div class="page-wrapper">
                             <div id="page_2" class="page">
-                                <div><p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
-                            </div>
-                        </div>
+                                <div class="content__page">
+                                    <div><p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                            
+                                    </div>
+                                </div>
+                        </div>-->
                     </section>   
                 </div>    
     
