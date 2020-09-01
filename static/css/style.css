@@ -67,7 +67,7 @@ nav {
     margin: 15px 0;
 }
 
-#btn_pdf {
+input[type=button] {
     border: none;
     outline: none;
     font-weight: 500;
@@ -83,7 +83,7 @@ nav {
     transition: all .2s cubic-bezier(.05,.03,.35,1);
 }
 
-#btn_pdf:hover {
+input[type=button]:hover {
     cursor: pointer;
     opacity: 0.7;
 }
@@ -170,6 +170,7 @@ main > div:last-child p {
     flex-direction: column;
     flex-wrap: wrap;
     font-size: 4pt;
+    white-space: pre-line;
 }
 
 .page-wrapper {
@@ -204,4 +205,53 @@ main > div:last-child p {
   transform: rotate(3deg);
   right: 10px;
   left: auto;
+}
+
+.row-widget {
+    width: 100%;
+    height: 20px;
+    background-color: moccasin;
+}
+
+.row-widget-controller {
+    background-color: pink;
+    width: 100%;
+    height: max-content;
+    display: grid;
+    grid-template-columns: 10px [ini] 1fr [end] 10px;
+    grid-template-rows: 10px [ini] 1fr [end] 10px;
+}
+
+.row-widget-controller > div {
+    width: 100%;
+    grid-column-start: ini;
+    grid-column-end: end;
+    grid-row-start: ini;
+    grid-row-end: end;
+    background-color: navajowhite;
+    border-radius: 8px;
+    box-shadow: 0 0 25px rgba(5,5,38,0.1);
+    display: grid;
+    grid-template-columns: 5px [ini] 1fr [end] 5px;
+    grid-template-rows: 5px [ini] 1fr [end] 5px;
+}
+
+.row-widget-controller > div > div {
+    width: 100%;
+    grid-column-start: ini;
+    grid-column-end: end;
+    grid-row-start: ini;
+    grid-row-end: end;
+    background-color: plum;
+}
+
+.controller-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+p, h1 {
+    margin: 0;
 }
