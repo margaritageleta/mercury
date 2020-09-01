@@ -162,7 +162,6 @@
                 function removeRow(id) {
                     document.getElementById("row-widget-" + id).remove();
                     document.getElementById("row-widget-controller-" + id).remove();
-                    rowWidgetsCounter--;
                 }
 
                 $("#btn-add-row-element").click(function () {
@@ -179,7 +178,6 @@
                 $(document).on('click', 'input[id^="btn-remove-text-"]', function() {
                     document.getElementById("text-widget-" + this.id.match(/\d+$/i)).remove();
                     document.getElementById("text-widget-controller-options-" + this.id.match(/\d+$/i)).remove();
-                    textWidgetsCounter--;
                 });
 
                 $(document).on('input', 'textarea[id^="textarea-widget-"]', function() {
@@ -227,6 +225,12 @@
                     $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "right");
                 });
 
+                $(document).on('input change', 'input[id^="scale-text-"]', function() {
+                    console.log(this.id);
+                    var newSize = document.getElementById(this.id).value;
+                    $('#text-widget-' + this.id.match(/\d+$/i)).css("font-size", newSize + "pt");
+                });
+
                 $(document).on('click', 'input[id^="btn-add-text-widget-row-"]', function() {
                     console.log(this.id);
                     const textWidget = document.createElement('p');
@@ -254,7 +258,7 @@
                                             <div id="center-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-center"></i></div>
                                             <div id="left-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-left"></i></div>
                                             <div id="right-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-right"></i></div>
-                                            <input type="range" id="scale-text-`+textWidgetsCounter+`" name="scale-text" min="2" max="42" value="12" step="2">
+                                            <input type="range" id="scale-text-`+textWidgetsCounter+`" name="scale-text" min="2" max="10" value="4" step="2">
                                         </div>
                                         <textarea 
                                             id="textarea-widget-`+(textWidgetsCounter++)+`" 
@@ -299,7 +303,7 @@
                     </div>
                     
                 </nav>
-                <section id="widgets-controllers" style="display: flex; flex-direction: column;">
+                <section id="widgets-controllers" class="widgets-controllers-container">
                     <input type="range" id="scale-doc" name="scale-doc" min="40" max="200" value="80" step="1">
                     <input type="range" id="margin-slider" name="margin-slider" min="0" max="40" value="20" step="1">
                     <div style="width: 100%; display: flex; justify-content: space-around;">
