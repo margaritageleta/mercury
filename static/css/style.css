@@ -27,13 +27,15 @@ main > div:last-child {
     background-color: lightgoldenrodyellow;
     position: absolute;
     right: 0;
-    
-    overflow: scroll;/*
-    white-space: nowrap;*/
+    flex-direction: column;
+    overflow: scroll;
+    white-space: nowrap;
     display: flex;
     justify-content: safe center;
     align-items: safe center;
     margin: auto;
+
+    transition: justify-content align-items 0.5s ease;
 }
 
 .pages-wrapper {
@@ -47,22 +49,40 @@ main > div:last-child {
     width: max-content;
     height: max-content;
     overflow: scroll;
-    white-space: nowrap;
+    white-space: normal;
     margin: auto;
-}
 
-.pages-wrapper  p {
-    width: 22cm;
-    background-color: lightpink;
+    transition: justify-content align-items 0.5s ease;
 }
 
 /*https://css-tricks.com/almanac/properties/s/scroll-margin/*/
 #pages {
-    width: 12cm;
-    height: 2cm;
-    background-color: ghostwhite;
-    border: solid black 2px;
+    width: max-content;
+    height: max-content;
     padding: 20px;
+}
+
+.page {
+    width: 225pt;
+    height: 325pt;
+    background-color: ghostwhite;
+    border: solid black 1px;
+    /*margin-top: 20px;
+    margin-bottom: 20px;*/
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: red;
+    font-size: 4pt;
+}
+
+.page > div {
+    width: 100%;
+    height: max-content;
+    background-color: lightskyblue;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .effect2
