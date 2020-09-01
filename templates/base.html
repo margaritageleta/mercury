@@ -10,22 +10,80 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <link rel="stylesheet" type="text/css" href="/css/fonts.css">
         <link rel="stylesheet" type="text/css" href="/css/style.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
         
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" 
+        integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
+        crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script type="text/javascript">
             window.onload = () => {
+                document.getElementById('pages-wrapper').style.transform = "scale("+$('#scale-doc').val()/100+")";
+                // https://stackoverflow.com/questions/29166163/jspdf-addhtml-exporting-low-quality-image-to-pdf
                 $("#btnPrint").click(function () {
                     console.log("Hi");
-                    var pdf = new jsPDF({
+                    /*var pdf = new jsPDF({
                         orientation: 'p',
                         unit: 'mm',
                         format: 'a4'
-                    });
-                    pdf.addHTML(document.body,function() {
-                        pdf.save('web.pdf');
+                    });*/
+                    /*
+                    let pdf = new jsPDF('p', 'pt', 'a4', { charSpace: '13' });
+                    pdf.html(document.getElementById('page_1'), {
+                        //width: 200,
+                        callback: function () {
+                            
+                            //pdf.save('test.pdf');
+                            window.open(pdf.output('bloburl')); // to debug
+                        }
                     });
                     console.log("Done");
+                    */
+                    async function capture() {
+                        var canvasPages = []
+                        const promise = new Promise((resolve, reject) => {
+                            console.log("Inside");
+                            for (i = 1; i < 3; i++) {
+                                /* Scale adds resolution */
+
+                                html2canvas($('#page_' + i.toString())[0], {scale: 10}).then(function (canvas) {
+                                    console.log("APPEND");
+                                    var canvasPage = canvas.toDataURL('image/png');
+                                    console.log(canvasPage)
+                                    canvasPages.push(canvas);
+                                });
+                            }
+                            (function wait4Pages(){
+                                console.log(canvasPages.length);
+                                if (canvasPages.length == 2) return resolve(canvasPages);
+                                setTimeout(wait4Pages, 30);
+                            })();
+                        });
+                        let result = await promise;
+                        return result;
+                    }
+                    var doc = new jsPDF('p', 'mm');
+                    var canvasPages = []
+                    const waitingForPages = async () => {
+                        canvasPages = await capture();
+                        console.log(canvasPages); 
+                        return true;
+                    };
+
+                    (async () => {
+                        if(await waitingForPages()) {
+                            doc.addImage(canvasPages[1], 'PNG', 0, 0, 210, 297); // A4 sizes
+                            doc.addPage();
+                            doc.addImage(canvasPages[0], 'PNG', 0, 0, 210, 297); // img1 and img2 on first page
+
+                            console.log("DOC SAVE");
+                            doc.save("file.pdf");
+                        } else {
+                            console.log("Something went wrong");
+                        }
+                    })()
+
                 });
                 
                 $("#scale-doc").on("input change", function() {
@@ -38,17 +96,17 @@
 
                     if (pagesWrapper.getBoundingClientRect().width > $("#table").outerWidth() ) {
                         console.log("OVERFLOW");
-                        $("#table").css('justify-content','flex-start'); 
-                    }
-                    else {
-                        $("#table").css('justify-content','center'); 
-                    }
-                    if (pagesWrapper.getBoundingClientRect().height > $("#table").outerHeight() ) {
-                        console.log("OVERFLOW");
                         $("#table").css('align-items','flex-start'); 
                     }
                     else {
                         $("#table").css('align-items','center'); 
+                    }
+                    if (pagesWrapper.getBoundingClientRect().height > $("#table").outerHeight() ) {
+                        console.log("OVERFLOW");
+                        $("#table").css('justify-content','flex-start'); 
+                    }
+                    else { 
+                        $("#table").css('justify-content','center'); 
                     }
                 });
             }
@@ -65,13 +123,24 @@
                 <section>
                     <p>Bye</p>
                     <input type="range" id="scale-doc" name="scale-doc" 
-         min="1" max="100" value="10" step="1">
+         min="1" max="100" value="37" step="1">
                     <input id="btnPrint" type="button" value="Print Div Contents"/>
                 </section>
             </div>
             <div id="table">
                 <div id= "pages-wrapper" class="pages-wrapper">
                     <section id="pages">
+                        <div id="page_1" class="page">
+                            <h1>Compressing objects: 100% (7/7), done</h1>
+                            <h3>Enumerating objects: 15, done</h3>
+                            <div><p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+
+                                The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p></div>
+                                <img src="/img/camilo.jpg" alt="Phones" width="200px" height="auto"> 
+                        </div>
+                        <div id="page_2" class="page">
+                            <div><p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                        </div>
         
                     </section>   
                 </div>    
