@@ -12,7 +12,7 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Gayathri:wght@100;400;700&display=swap" rel="stylesheet"> 
         <link href="https://fonts.googleapis.com/css2?family=Gayathri:wght@100;400;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
-        
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" 
         integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
         crossorigin="anonymous"></script>
@@ -125,7 +125,7 @@
                     widget.setAttribute("id", "row-widget-" + rowWidgetsCounter);
                     console.log(rowWidgetsCounter);
                     widget.className = 'row-widget';
-                    widget.innerHTML = `<p>New row widget</p>`;
+                    widget.innerHTML = ``;
                     document.getElementById('content__page_1').appendChild(widget);
 
                     const widgetController = document.createElement('div');
@@ -138,18 +138,18 @@
                                     <div>
                                         <h1>Row widget #`+rowWidgetsCounter+`</h1>
                                     </div>
-                                    <input id='btn-remove-row-`+(rowWidgetsCounter++)+`' type='button' value='Remove widget'/>
+                                    <input id='btn-remove-row-`+rowWidgetsCounter+`' type='button' value='Remove widget'/>
                                 </div>
-                                <div class="controller-options">
-                                    <div>
-                                        
-                                    </div>
-                                    <textarea 
-                                        id="text-widget-`+(textWidgetsCounter++)+`" 
+                                <div id="row-widget-controller-options-` + rowWidgetsCounter+`" class="controller-options">
+                                    <!--<textarea 
+                                        id="text-widget-`+(textWidgetsCounter)+`" 
                                         name="text" 
                                         placeholder="Type here widget text"
                                         rows="4"
-                                    ></textarea>
+                                    ></textarea>-->
+                                </div>
+                                <div style="width: 100%; display: flex; justify-content: space-around;">
+                                        <input id="btn-add-text-widget-row-`+(rowWidgetsCounter++)+`" type="button" value="Add text element"/>
                                 </div>
                             </div>
                         </div>
@@ -176,12 +176,99 @@
                     removeRow(this.id.match(/\d+$/i));
                 });
 
-                $(document).on('input', 'textarea[id^="text-widget-"]', function() {
+                $(document).on('click', 'input[id^="btn-remove-text-"]', function() {
+                    document.getElementById("text-widget-" + this.id.match(/\d+$/i)).remove();
+                    document.getElementById("text-widget-controller-options-" + this.id.match(/\d+$/i)).remove();
+                    textWidgetsCounter--;
+                });
+
+                $(document).on('input', 'textarea[id^="textarea-widget-"]', function() {
                     console.log(this.id);
                     var text = document.getElementById(this.id).value;
                     console.log(text);
-                    // Get the predicted val from backend
-                    $('#row-widget-' + this.id.match(/\d+$/i)).text(text);
+                    $('#text-widget-' + this.id.match(/\d+$/i)).text(text);
+                });
+
+                $(document).on('click', 'div[id^="bold-text-operator-"]', function() {
+                    var textWidget = $('#text-widget-' + this.id.match(/\d+$/i));
+                    var fontWeight = textWidget.css('font-weight');
+                    console.log(fontWeight);
+                    if (fontWeight  == 'normal' || fontWeight  == '400') {
+                        textWidget.css("font-weight", "bold");
+                    } else {
+                        textWidget.css("font-weight", "normal");
+                    }
+                });
+
+                $(document).on('click', 'div[id^="italic-text-operator-"]', function() {
+                    var textWidget = $('#text-widget-' + this.id.match(/\d+$/i));
+                    var fontStyle = textWidget.css('font-style');
+                    console.log(fontStyle);
+                    if (fontStyle  == 'normal') {
+                        textWidget.css("font-style", "italic");
+                    } else {
+                        textWidget.css("font-style", "normal");
+                    }
+                });
+
+                $(document).on('click', 'div[id^="justify-text-operator-"]', function() {
+                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "justify");
+                });
+
+                $(document).on('click', 'div[id^="center-text-operator-"]', function() {
+                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "center");
+                });
+
+                $(document).on('click', 'div[id^="left-text-operator-"]', function() {
+                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "left");
+                });
+
+                $(document).on('click', 'div[id^="right-text-operator-"]', function() {
+                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "right");
+                });
+
+                $(document).on('click', 'input[id^="btn-add-text-widget-row-"]', function() {
+                    console.log(this.id);
+                    const textWidget = document.createElement('p');
+                    textWidget.setAttribute("id", "text-widget-" + textWidgetsCounter);
+                    document.getElementById('row-widget-'+this.id.match(/\d+$/i)).appendChild(textWidget);
+
+                    const textWidgetController = document.createElement('div');
+                    textWidgetController.setAttribute("id", "text-widget-controller-options-" + textWidgetsCounter);
+                    textWidgetController.className = 'text-widget-controller';
+                    textWidgetController.innerHTML = `
+                        <div>
+                            <div>
+                                <div>
+                                    <div class="controller-menu">
+                                        <div>
+                                            <h1>Text widget #`+textWidgetsCounter+`</h1>
+                                        </div>
+                                        <input id='btn-remove-text-`+textWidgetsCounter+`' type='button' value='Remove widget'/>
+                                    </div>
+                                    <div class="text-controller-options">
+                                        <div class="text-style-options">
+                                            <div id="bold-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-bold"></i></div>
+                                            <div id="italic-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-italic"></i></div>
+                                            <div id="justify-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-justify"></i></div>
+                                            <div id="center-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-center"></i></div>
+                                            <div id="left-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-left"></i></div>
+                                            <div id="right-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-right"></i></div>
+                                            <input type="range" id="scale-text-`+textWidgetsCounter+`" name="scale-text" min="2" max="42" value="12" step="2">
+                                        </div>
+                                        <textarea 
+                                            id="textarea-widget-`+(textWidgetsCounter++)+`" 
+                                            name="text" 
+                                            placeholder="Type here widget text"
+                                            rows="4"
+                                        ></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    console.log('row-widget-controller-options-'+this.id.match(/\d+$/i));
+                    document.getElementById('row-widget-controller-options-'+this.id.match(/\d+$/i)).appendChild(textWidgetController);
                 });
 
 /*
@@ -208,14 +295,17 @@
                         <div class="title__nav">
                             <h1>Mercury Notes</h1>
                         </div>
-                        <input id="btn_pdf" type="button" value="Print Div Contents"/>
+                        <input id="btn_pdf" type="button" value="Save PDF"/>
                     </div>
                     
                 </nav>
                 <section id="widgets-controllers" style="display: flex; flex-direction: column;">
                     <input type="range" id="scale-doc" name="scale-doc" min="40" max="200" value="80" step="1">
                     <input type="range" id="margin-slider" name="margin-slider" min="0" max="40" value="20" step="1">
-                    <input id="btn-add-row-element" type="button" value="Add row element"/>
+                    <div style="width: 100%; display: flex; justify-content: space-around;">
+                        <input id="btn-add-row-element" type="button" value="Add row element"/>
+                    </div>
+
                     <!--<textarea 
                         id="input_1" 
                         name="text" 
