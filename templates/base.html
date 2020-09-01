@@ -19,27 +19,9 @@
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script type="text/javascript">
             window.onload = () => {
+                var rowWidgetsCounter = 1;
                 document.getElementById('pages-wrapper').style.transform = "scale("+80/100+")";
-                // https://stackoverflow.com/questions/29166163/jspdf-addhtml-exporting-low-quality-image-to-pdf
                 $("#btn_pdf").click(function () {
-                    console.log("Hi");
-                    /*var pdf = new jsPDF({
-                        orientation: 'p',
-                        unit: 'mm',
-                        format: 'a4'
-                    });*/
-                    /*
-                    let pdf = new jsPDF('p', 'pt', 'a4', { charSpace: '13' });
-                    pdf.html(document.getElementById('page_1'), {
-                        //width: 200,
-                        callback: function () {
-                            
-                            //pdf.save('test.pdf');
-                            window.open(pdf.output('bloburl')); // to debug
-                        }
-                    });
-                    console.log("Done");
-                    */
                     async function capture() {
                         var canvasPages = []
                         const promise = new Promise((resolve, reject) => {
@@ -127,6 +109,70 @@
                     var newMargin = $('#margin-slider').val();
                     document.documentElement.style.setProperty('--margin', newMargin + 'pt');
                 });
+
+                $('#input_1').on('input',function(e) {
+                    // Take the value in the input field
+                    var text = $('#input_1').val();
+                    console.log(text);
+                    // Get the predicted val from backend
+                    $('#result').text(text);
+                });
+
+                function addRowWidget() {
+                    const widget = document.createElement('div');
+                    widget.setAttribute("id", "row-widget-" + rowWidgetsCounter);
+                    console.log(rowWidgetsCounter);
+                    widget.className = 'row-widget';
+                    widget.innerHTML = `<p>New row widget</p>`;
+                    document.getElementById('content__page_1').appendChild(widget);
+
+                    const widgetController = document.createElement('div');
+                    widgetController.setAttribute("id", "row-widget-controller-" + rowWidgetsCounter);
+                    widgetController.className = 'row-widget-controller';
+                    widgetController.innerHTML = `<div class='row-widget-controller'><div>
+                            <div>
+                                <div class='controller-menu'>
+                                    <div>
+                                        <h1>Row widget #`+rowWidgetsCounter+`</h1>
+                                    </div>
+                                    <input id='btn-remove-row-`+(rowWidgetsCounter++)+`' type='button' value='Remove widget'/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                    document.getElementById('widgets-controllers').appendChild(widgetController);
+
+                }
+
+                function removeRow(id) {
+                    document.getElementById("row-widget-" + id).remove();
+                    document.getElementById("row-widget-controller-" + id).remove();
+                    rowWidgetsCounter--;
+                }
+
+                $("#btn-add-row-element").click(function () {
+                    console.log("Add row widget");
+                    addRowWidget();
+                });
+
+                // https://stackoverflow.com/questions/39608567/why-jquery-does-not-work-for-new-element-created-in-ajax-success
+                $(document).on('click', 'input[id^="btn-remove-row-"]', function() {
+                    console.log(this.id);
+                    removeRow(this.id.match(/\d+$/i));
+                });
+
+/*
+                $('input[id^="btn-"').click(function() {
+                    console.log(this.id);
+                    console.log("HELLO");
+                    return this.id.match(/abc+d/);
+                }).html("Matched!");*/
+    /*.click(function () {
+                    console.log("Remove row widget");
+                    console.log($(this));
+                    addRowWidget();
+                });*/
             }
 
         </script>
@@ -144,10 +190,29 @@
                     </div>
                     
                 </nav>
-                <section>
+                <section id="widgets-controllers" style="display: flex; flex-direction: column;">
                     <input type="range" id="scale-doc" name="scale-doc" min="40" max="200" value="80" step="1">
                     <input type="range" id="margin-slider" name="margin-slider" min="0" max="40" value="20" step="1">
-
+                    <input id="btn-add-row-element" type="button" value="Add row element"/>
+                    <!--<textarea 
+                        id="input_1" 
+                        name="text" 
+                        placeholder="Type here to see the potential effect of what you are writing."
+                        rows="4"
+                    >
+                    </textarea>-->
+                    <!--<div class="row-widget-controller">
+                        <div>
+                            <div>
+                                <div class="controller-menu">
+                                    <div>
+                                        <h1>Mercury Notes</h1>
+                                    </div>
+                                    <input id="btn-remove-row" type="button" value="Remove widget"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
                 </section>
             </div>
             <div id="table">
@@ -156,12 +221,6 @@
                         <div class="page-wrapper">
                             <div id="page_1" class="page">
                                 <div id="content__page_1" class="content__page">
-                                    <div>
-                                        <p>
-                                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-                                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-                                        </p>
-                                    </div>   
                                 </div>
                             </div>
                         </div>
