@@ -5,9 +5,7 @@ function addRowWidget(globals) {
     console.log(globals.rowWidgetsCounter);
 
     widget.className = 'row-widget';
-    widget.innerHTML = `<div id="row-widget-content-`+globals.rowWidgetsCounter+`">
-        <p>Baby</p>
-    </div>`;
+    widget.innerHTML = `<div id="row-widget-content-`+globals.rowWidgetsCounter+`"></div>`;
     document.getElementById('content__page_1').appendChild(widget);
 
     const widgetController = document.createElement('div');

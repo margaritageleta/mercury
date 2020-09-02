@@ -147,6 +147,7 @@
                     removeRow(this.id.match(/\d+$/i));
                 });
 
+                // Slider to change top margin of row widget
                 $(document).on('input change', 'input[id^="slider-margin-top-row-"]', function() {
                     var newMargin = document.getElementById(this.id).value;
                     var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
@@ -154,6 +155,7 @@
                     rowWidget.css( "grid-template-rows", newMargin + 'px [ini] 1fr [end] ' + currentCSS.match(/\d+px$/i));
                 });
 
+                // Slider to change bottom margin of row widget
                 $(document).on('input change', 'input[id^="slider-margin-bottom-row-"]', function() {
                     var newMargin = document.getElementById(this.id).value;
                     var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
@@ -161,6 +163,7 @@
                     rowWidget.css( "grid-template-rows", currentCSS.match(/^\d+px/i) + '[ini] 1fr [end] ' + newMargin + 'px');
                 });
 
+                // Slider to change left margin of row widget
                 $(document).on('input change', 'input[id^="slider-margin-left-row-"]', function() {
                     var newMargin = document.getElementById(this.id).value;
                     var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
@@ -168,11 +171,43 @@
                     rowWidget.css( "grid-template-columns", newMargin + 'px [ini] 1fr [end] ' + currentCSS.match(/\d+px$/i));
                 });
 
+                // Slider to change right margin of row widget
                 $(document).on('input change', 'input[id^="slider-margin-right-row-"]', function() {
                     var newMargin = document.getElementById(this.id).value;
                     var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
                     var currentCSS = rowWidget.css( "grid-template-columns");
                     rowWidget.css( "grid-template-columns", currentCSS.match(/^\d+px/i) + '[ini] 1fr [end] ' + newMargin + 'px');
+                });
+
+                $(document).on('mouseover', 'div[id^="row-widget-controller-"]', function() {
+                    console.log(this.id);
+                    var widget = document.getElementById('row-widget-content-' + this.id.match(/\d+$/i));
+                    widget.style.backgroundColor = 'lightcyan';
+                });
+
+                $(document).on('mouseout', 'div[id^="row-widget-controller-"]', function() {
+                    console.log(this.id);
+                    var widget = document.getElementById('row-widget-content-' + this.id.match(/\d+$/i));
+                    widget.style.backgroundColor = 'transparent';
+                });
+
+                /* Functions regarding text widgets */
+
+                $(document).on('click', 'input[id^="btn-add-text-widget-row-"]', function() {
+                    console.log(this.id);
+                    addTextWidget(this.id.match(/\d+$/i), globals);
+                });
+
+                $(document).on('mouseover', 'div[id^="text-widget-controller-"]', function() {
+                    console.log(this.id);
+                    var widget = document.getElementById('text-widget-' + this.id.match(/\d+$/i));
+                    widget.style.backgroundColor = 'lightskyblue';
+                });
+
+                $(document).on('mouseout', 'div[id^="text-widget-controller-"]', function() {
+                    console.log(this.id);
+                    var widget = document.getElementById('text-widget-' + this.id.match(/\d+$/i));
+                    widget.style.backgroundColor = 'transparent';
                 });
             }
         </script>

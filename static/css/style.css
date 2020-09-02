@@ -213,7 +213,6 @@ main > div:last-child p {
 .row-widget {
     width: 100%;
     height: max-content;
-    background-color: pink;
     display: grid;
     grid-template-columns: 0pt [ini] 1fr [end] 0pt;
     grid-template-rows: 0pt [ini] 1fr [end] 0pt;
@@ -227,6 +226,11 @@ main > div:last-child p {
     grid-column-end: end;
     grid-row-start: ini;
     grid-row-end: end;
+
+    -webkit-transition: background-color 0.5s ease-out;
+    -moz-transition: background-color 0.5s ease-out;
+    -o-transition: background-color 0.5s ease-out;
+    transition: background-color 0.5s ease-out;
 }
 
 .row-widget-controller {
@@ -235,6 +239,14 @@ main > div:last-child p {
     display: grid;
     grid-template-columns: 10px [ini] 1fr [end] 10px;
     grid-template-rows: 10px [ini] 1fr [end] 10px;
+}
+
+.row-widget-controller > div:hover {
+    background-color: lightcyan;
+}
+
+.text-widget-controller > div:hover {
+    background-color: lightskyblue;
 }
 
 .row-widget-controller > div {
@@ -250,6 +262,11 @@ main > div:last-child p {
     display: grid;
     grid-template-columns: 5px [ini] 1fr [end] 5px;
     grid-template-rows: 5px [ini] 1fr [end] 5px;
+
+    -webkit-transition: background-color 0.5s ease-out;
+    -moz-transition: background-color 0.5s ease-out;
+    -o-transition: background-color 0.5s ease-out;
+    transition: background-color 0.5s ease-out;
 }
 
 .row-widget-controller > div > div {
@@ -299,6 +316,11 @@ textarea {
     display: grid;
     grid-template-columns: 5px [ini] 1fr [end] 5px;
     grid-template-rows: 5px [ini] 1fr [end] 5px;
+
+    -webkit-transition: background-color 0.5s ease-out;
+    -moz-transition: background-color 0.5s ease-out;
+    -o-transition: background-color 0.5s ease-out;
+    transition: background-color 0.5s ease-out;
 }
 
 .text-widget-controller > div > div {
@@ -319,6 +341,13 @@ textarea {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+}
+
+.text-widget {
+    -webkit-transition: background-color 0.5s ease-out;
+    -moz-transition: background-color 0.5s ease-out;
+    -o-transition: background-color 0.5s ease-out;
+    transition: background-color 0.5s ease-out;
 }
 
 .text-button {
