@@ -34,6 +34,44 @@
                 // By default, scale doc
                 document.getElementById('pages-wrapper').style.transform = "scale("+80/100+")";
 
+                // Doc scaler
+                $("#scale-doc").on("input change", function() {
+                    var factor = $('#scale-doc').val()/100;
+                    document.getElementById('pages-wrapper').style.transform = "scale("+factor+")";
+                    
+                    var pagesWrapper = document.querySelector('#pages-wrapper');
+
+                    //console.log(pagesWrapper.getBoundingClientRect().width);
+                    //console.log($("#table").outerWidth());
+
+                    if (pagesWrapper.getBoundingClientRect().width > $("#table").outerWidth() ) {
+                        $("#table").css('align-items','flex-start'); 
+                        console.log(factor);
+                        if (factor > 1) {
+                            document.getElementById('pages-wrapper').style.transform = "scale("+ factor +")" + 'translateY(' + ((factor - 1) * 2) * 100 + 'pt)' + 'translateX(' + ((factor - 1)) * 100 + 'pt)';
+                        }
+                    }
+                    else {
+                        $("#table").css('align-items','center'); 
+                    }
+                    if (pagesWrapper.getBoundingClientRect().height > $("#table").outerHeight() ) {
+                        $("#table").css('justify-content','flex-start'); 
+                        console.log(factor);
+                        if (factor > 1) {
+                            document.getElementById('pages-wrapper').style.transform = "scale("+ factor +")" + 'translateY(' + ((factor - 1) * 2) * 100 + 'pt)' + 'translateX(' + ((factor - 1)) * 100 + 'pt)';
+                        }
+                    }
+                    else { 
+                        $("#table").css('justify-content','center'); 
+                    }
+                });
+
+                // Doc margin controller
+                $("#margin-slider").on("input change", function() {
+                    var newMargin = $('#margin-slider').val();
+                    document.documentElement.style.setProperty('--margin', newMargin + 'pt');
+                });
+
                 // On save PDF button, generate PDF 
                 // TODO: review
                 $("#btn_pdf").click(function () {
@@ -107,6 +145,34 @@
                 $(document).on('click', 'input[id^="btn-remove-row-"]', function() {
                     console.log(this.id);
                     removeRow(this.id.match(/\d+$/i));
+                });
+
+                $(document).on('input change', 'input[id^="slider-margin-top-row-"]', function() {
+                    var newMargin = document.getElementById(this.id).value;
+                    var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
+                    var currentCSS = rowWidget.css( "grid-template-rows");
+                    rowWidget.css( "grid-template-rows", newMargin + 'px [ini] 1fr [end] ' + currentCSS.match(/\d+px$/i));
+                });
+
+                $(document).on('input change', 'input[id^="slider-margin-bottom-row-"]', function() {
+                    var newMargin = document.getElementById(this.id).value;
+                    var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
+                    var currentCSS = rowWidget.css( "grid-template-rows");
+                    rowWidget.css( "grid-template-rows", currentCSS.match(/^\d+px/i) + '[ini] 1fr [end] ' + newMargin + 'px');
+                });
+
+                $(document).on('input change', 'input[id^="slider-margin-left-row-"]', function() {
+                    var newMargin = document.getElementById(this.id).value;
+                    var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
+                    var currentCSS = rowWidget.css( "grid-template-columns");
+                    rowWidget.css( "grid-template-columns", newMargin + 'px [ini] 1fr [end] ' + currentCSS.match(/\d+px$/i));
+                });
+
+                $(document).on('input change', 'input[id^="slider-margin-right-row-"]', function() {
+                    var newMargin = document.getElementById(this.id).value;
+                    var rowWidget = $('#row-widget-' + this.id.match(/\d+$/i));
+                    var currentCSS = rowWidget.css( "grid-template-columns");
+                    rowWidget.css( "grid-template-columns", currentCSS.match(/^\d+px/i) + '[ini] 1fr [end] ' + newMargin + 'px');
                 });
             }
         </script>
