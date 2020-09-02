@@ -413,6 +413,10 @@ textarea {
     color: darkred;
 }
 
+[class*="row-not-visible-"] {
+    display: none !important;
+}
+
 input[name="scale-text"] {
     width: 100%;
 }

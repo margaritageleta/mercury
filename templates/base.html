@@ -146,15 +146,22 @@
                     removeRow(this.id.match(/\d+$/i));
                 });
 
+                // Minimize a row widget
                 $(document).on('click', 'div[id^="btn-minimize-row-"]', function() {
-                    console.log(this.id);
-                    $('.subwidget-visible-' + this.id.match(/\d+$/i)).each(function() {
-                        if ($(this).hasClass('row-not-visible' + this.id.match(/\d+$/i))) {
-                            $(this).css('display', 'initial');
-                            $(this).removeClass('row-not-visible' + this.id.match(/\d+$/i));
+                    var id = this.id;
+                    // Change display styles for each subwidget
+                    $('.subwidget-visible-' + id.match(/\d+$/i)).each(function() {
+                        if ($(this).hasClass('row-not-visible-' + id.match(/\d+$/i))) {
+                            $(this).removeClass('row-not-visible-' + id.match(/\d+$/i));
+                            // Change sign icon
+                            document.getElementById(id).firstChild.classList.remove('fa-plus');
+                            document.getElementById(id).firstChild.classList.add('fa-minus');
+
                         } else {
-                            $(this).css('display', 'none');
-                            $(this).addClass('row-not-visible' + this.id.match(/\d+$/i));
+                            $(this).addClass('row-not-visible-' + id.match(/\d+$/i));
+                            // Change sign icon
+                            document.getElementById(id).firstChild.classList.remove('fa-minus');
+                            document.getElementById(id).firstChild.classList.add('fa-plus');
                         }
                     });
                 });
