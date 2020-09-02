@@ -150,7 +150,7 @@
                 $(document).on('click', 'div[id^="btn-minimize-row-"]', function() {
                     var id = this.id;
                     // Change display styles for each subwidget
-                    $('.subwidget-visible-' + id.match(/\d+$/i)).each(function() {
+                    $('.row-subwidget-visible-' + id.match(/\d+$/i)).each(function() {
                         if ($(this).hasClass('row-not-visible-' + id.match(/\d+$/i))) {
                             $(this).removeClass('row-not-visible-' + id.match(/\d+$/i));
                             // Change sign icon
@@ -227,6 +227,26 @@
                     console.log(this.id);
                     var widget = document.getElementById('text-widget-' + this.id.match(/\d+$/i));
                     widget.style.backgroundColor = 'transparent';
+                });
+
+                // Minimize a text widget
+                $(document).on('click', 'div[id^="btn-minimize-text-"]', function() {
+                    var id = this.id;
+                    // Change display styles for each subwidget
+                    $('.text-subwidget-visible-' + id.match(/\d+$/i)).each(function() {
+                        if ($(this).hasClass('text-not-visible-' + id.match(/\d+$/i))) {
+                            $(this).removeClass('text-not-visible-' + id.match(/\d+$/i));
+                            // Change sign icon
+                            document.getElementById(id).firstChild.classList.remove('fa-plus');
+                            document.getElementById(id).firstChild.classList.add('fa-minus');
+
+                        } else {
+                            $(this).addClass('text-not-visible-' + id.match(/\d+$/i));
+                            // Change sign icon
+                            document.getElementById(id).firstChild.classList.remove('fa-minus');
+                            document.getElementById(id).firstChild.classList.add('fa-plus');
+                        }
+                    });
                 });
             }
         </script>

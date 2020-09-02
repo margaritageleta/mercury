@@ -13,11 +13,14 @@ function addTextWidget(rowId, globals) {
                 <div>
                     <div class="controller-menu">
                         <div>
-                            <h1>Text widget #`+globals.textWidgetsCounter+`</h1>
+                            <h1>Text widget `+globals.textWidgetsCounter+`</h1>
                         </div>
-                        <input id='btn-remove-text-`+globals.textWidgetsCounter+`' type='button' value='Remove widget'/>
+                        <div style="display: flex; width: max-content; flex-direction: row;">
+                            <div id='btn-minimize-text-`+globals.textWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-minus minus"></i></div>
+                            <div id='btn-remove-text-`+globals.textWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-times times"></i></div>
+                        </div>
                     </div>
-                    <div class="text-controller-options">
+                    <div class="text-controller-options text-subwidget-visible-`+globals.textWidgetsCounter+`">
                         <div class="text-style-options">
                             <div id="bold-text-operator-`+globals.textWidgetsCounter+`" class="text-button"><i class="fa fa-bold"></i></div>
                             <div id="italic-text-operator-`+globals.textWidgetsCounter+`" class="text-button"><i class="fa fa-italic"></i></div>
@@ -43,7 +46,7 @@ function addTextWidget(rowId, globals) {
 }
 
 
-    $(document).on('click', 'input[id^="btn-remove-text-"]', function() {
+    $(document).on('click', 'div[id^="btn-remove-text-"]', function() {
         document.getElementById("text-widget-" + this.id.match(/\d+$/i)).remove();
         document.getElementById("text-widget-controller-options-" + this.id.match(/\d+$/i)).remove();
     });

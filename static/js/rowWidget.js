@@ -23,7 +23,7 @@ function addRowWidget(globals) {
                         <div id='btn-remove-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-times times"></i></div>
                     </div>
                 </div>
-                <div class="row-controller-options subwidget-visible-`+globals.rowWidgetsCounter+`">
+                <div class="row-controller-options row-subwidget-visible-`+globals.rowWidgetsCounter+`">
                     <div>
                         <div>
                             <label>Top row margin</label>
@@ -45,10 +45,10 @@ function addRowWidget(globals) {
                         </div>
                     </div>
                 </div>
-                <div id="row-widget-controller-options-` + globals.rowWidgetsCounter+`" class="controller-options subwidget-visible-`+globals.rowWidgetsCounter+`">
+                <div id="row-widget-controller-options-` + globals.rowWidgetsCounter+`" class="controller-options row-subwidget-visible-`+globals.rowWidgetsCounter+`">
                     
                 </div>
-                <div style="width: 100%; display: flex; justify-content: center;" class="subwidget-visible-`+globals.rowWidgetsCounter+`">
+                <div style="width: 100%; display: flex; justify-content: center;" class="row-subwidget-visible-`+globals.rowWidgetsCounter+`">
                         <input id="btn-add-text-widget-row-`+globals.rowWidgetsCounter+`" type="button" value="Add text element"/>
                         <input id="btn-add-splitter-row-`+globals.rowWidgetsCounter+`" type="button" value="Add splitter"/>
                         <input id="btn-add-image-widget-row-`+(globals.rowWidgetsCounter++)+`" type="button" value="Add image"/>
