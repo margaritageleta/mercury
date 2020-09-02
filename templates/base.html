@@ -142,9 +142,21 @@
 
                 // Remove row element button trigger
                 // https://stackoverflow.com/questions/39608567/why-jquery-does-not-work-for-new-element-created-in-ajax-success
-                $(document).on('click', 'input[id^="btn-remove-row-"]', function() {
-                    console.log(this.id);
+                $(document).on('click', 'div[id^="btn-remove-row-"]', function() {
                     removeRow(this.id.match(/\d+$/i));
+                });
+
+                $(document).on('click', 'div[id^="btn-minimize-row-"]', function() {
+                    console.log(this.id);
+                    $('.subwidget-visible-' + this.id.match(/\d+$/i)).each(function() {
+                        if ($(this).hasClass('row-not-visible' + this.id.match(/\d+$/i))) {
+                            $(this).css('display', 'initial');
+                            $(this).removeClass('row-not-visible' + this.id.match(/\d+$/i));
+                        } else {
+                            $(this).css('display', 'none');
+                            $(this).addClass('row-not-visible' + this.id.match(/\d+$/i));
+                        }
+                    });
                 });
 
                 // Slider to change top margin of row widget
@@ -180,26 +192,26 @@
                 });
 
                 $(document).on('mouseover', 'div[id^="row-widget-controller-"]', function() {
-                    console.log(this.id);
-                    var widget = document.getElementById('row-widget-content-' + this.id.match(/\d+$/i));
+                    var widget = document.getElementById('row-widget-' + this.id.match(/\d+$/i));
+                    var widgetContent = document.getElementById('row-widget-content-' + this.id.match(/\d+$/i));
                     widget.style.backgroundColor = 'lightcyan';
+                    widgetContent.style.border = '0.5pt solid lightskyblue';
                 });
 
                 $(document).on('mouseout', 'div[id^="row-widget-controller-"]', function() {
-                    console.log(this.id);
-                    var widget = document.getElementById('row-widget-content-' + this.id.match(/\d+$/i));
+                    var widget = document.getElementById('row-widget-' + this.id.match(/\d+$/i));
+                    var widgetContent = document.getElementById('row-widget-content-' + this.id.match(/\d+$/i));
                     widget.style.backgroundColor = 'transparent';
+                    widgetContent.style.border = 'none';
                 });
 
                 /* Functions regarding text widgets */
 
                 $(document).on('click', 'input[id^="btn-add-text-widget-row-"]', function() {
-                    console.log(this.id);
                     addTextWidget(this.id.match(/\d+$/i), globals);
                 });
 
                 $(document).on('mouseover', 'div[id^="text-widget-controller-"]', function() {
-                    console.log(this.id);
                     var widget = document.getElementById('text-widget-' + this.id.match(/\d+$/i));
                     widget.style.backgroundColor = 'lightskyblue';
                 });
