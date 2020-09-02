@@ -18,11 +18,24 @@
         crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        <script type="text/javascript" src="/js/globalControllers.js"></script>
+        <script type="text/javascript" src="/js/rowWidget.js"></script>
+        <script type="text/javascript" src="/js/textWidget.js"></script>
         <script type="text/javascript">
+
+            // Global vars to keep track of the number of widgets created 
+            // and their identifiers
+            var globals = {
+                rowWidgetsCounter : 1,
+                textWidgetsCounter : 1
+            }
+
             window.onload = () => {
-                var rowWidgetsCounter = 1;
-                var textWidgetsCounter = 1;
+                // By default, scale doc
                 document.getElementById('pages-wrapper').style.transform = "scale("+80/100+")";
+
+                // On save PDF button, generate PDF 
+                // TODO: review
                 $("#btn_pdf").click(function () {
                     async function capture() {
                         var canvasPages = []
@@ -39,6 +52,8 @@
                                     'transform'         : 'scale(' + initialScale + ')'
                                 });
                                 /* Scale adds resolution */
+                                // TODO: find a solution to store the original HTML, not a canvas
+                                // Links are lost, text is lost
                                 html2canvas($('#page_' + i.toString())[0], {scale: 10}).then(function (canvas) {
                                     console.log("APPEND");
                                     var canvasPage = canvas.toDataURL('image/png');
@@ -63,6 +78,8 @@
                         return true;
                     };
 
+                    // Wait for all pages before concatenating them in one PDF file
+                    // TODO: generalize to N pages
                     (async () => {
                         if(await waitingForPages()) {
                             //doc.addImage(canvasPages[1], 'PNG', 0, 0, 210, 297);
@@ -76,218 +93,22 @@
                     })()
 
                 });
-                
-                $("#scale-doc").on("input change", function() {
-                    var factor = $('#scale-doc').val()/100;
-                    document.getElementById('pages-wrapper').style.transform = "scale("+factor+")";
-                    
-                    var pagesWrapper = document.querySelector('#pages-wrapper');
 
-                    //console.log(pagesWrapper.getBoundingClientRect().width);
-                    //console.log($("#table").outerWidth());
-
-                    if (pagesWrapper.getBoundingClientRect().width > $("#table").outerWidth() ) {
-                        $("#table").css('align-items','flex-start'); 
-                        console.log(factor);
-                        if (factor > 1) {
-                            document.getElementById('pages-wrapper').style.transform = "scale("+ factor +")" + 'translateY(' + ((factor - 1) * 2) * 100 + 'pt)' + 'translateX(' + ((factor - 1)) * 100 + 'pt)';
-                        }
-                    }
-                    else {
-                        $("#table").css('align-items','center'); 
-                    }
-                    if (pagesWrapper.getBoundingClientRect().height > $("#table").outerHeight() ) {
-                        $("#table").css('justify-content','flex-start'); 
-                        console.log(factor);
-                        if (factor > 1) {
-                            document.getElementById('pages-wrapper').style.transform = "scale("+ factor +")" + 'translateY(' + ((factor - 1) * 2) * 100 + 'pt)' + 'translateX(' + ((factor - 1)) * 100 + 'pt)';
-                        }
-                    }
-                    else { 
-                        $("#table").css('justify-content','center'); 
-                    }
-                });
-                $("#margin-slider").on("input change", function() {
-                    var newMargin = $('#margin-slider').val();
-                    document.documentElement.style.setProperty('--margin', newMargin + 'pt');
-                });
-
-                $('#input_1').on('input',function(e) {
-                    // Take the value in the input field
-                    var text = $('#input_1').val();
-                    console.log(text);
-                    // Get the predicted val from backend
-                    $('#result').text(text);
-                });
-
-                function addRowWidget() {
-                    const widget = document.createElement('div');
-                    widget.setAttribute("id", "row-widget-" + rowWidgetsCounter);
-                    console.log(rowWidgetsCounter);
-                    widget.className = 'row-widget';
-                    widget.innerHTML = ``;
-                    document.getElementById('content__page_1').appendChild(widget);
-
-                    const widgetController = document.createElement('div');
-                    widgetController.setAttribute("id", "row-widget-controller-" + rowWidgetsCounter);
-                    widgetController.className = 'row-widget-controller';
-                    widgetController.innerHTML = `<div>
-                        <div>
-                            <div>
-                                <div class='controller-menu'>
-                                    <div>
-                                        <h1>Row widget #`+rowWidgetsCounter+`</h1>
-                                    </div>
-                                    <input id='btn-remove-row-`+rowWidgetsCounter+`' type='button' value='Remove widget'/>
-                                </div>
-                                <div id="row-widget-controller-options-` + rowWidgetsCounter+`" class="controller-options">
-                                    <!--<textarea 
-                                        id="text-widget-`+(textWidgetsCounter)+`" 
-                                        name="text" 
-                                        placeholder="Type here widget text"
-                                        rows="4"
-                                    ></textarea>-->
-                                </div>
-                                <div style="width: 100%; display: flex; justify-content: space-around;">
-                                        <input id="btn-add-text-widget-row-`+(rowWidgetsCounter++)+`" type="button" value="Add text element"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-
-                    document.getElementById('widgets-controllers').appendChild(widgetController);
-
-                }
-
-                function removeRow(id) {
-                    document.getElementById("row-widget-" + id).remove();
-                    document.getElementById("row-widget-controller-" + id).remove();
-                }
-
+                /* Functions regarding row widgets */
+    
+                // Add row element button trigger
                 $("#btn-add-row-element").click(function () {
                     console.log("Add row widget");
-                    addRowWidget();
+                    addRowWidget(globals);
                 });
 
+                // Remove row element button trigger
                 // https://stackoverflow.com/questions/39608567/why-jquery-does-not-work-for-new-element-created-in-ajax-success
                 $(document).on('click', 'input[id^="btn-remove-row-"]', function() {
                     console.log(this.id);
                     removeRow(this.id.match(/\d+$/i));
                 });
-
-                $(document).on('click', 'input[id^="btn-remove-text-"]', function() {
-                    document.getElementById("text-widget-" + this.id.match(/\d+$/i)).remove();
-                    document.getElementById("text-widget-controller-options-" + this.id.match(/\d+$/i)).remove();
-                });
-
-                $(document).on('input', 'textarea[id^="textarea-widget-"]', function() {
-                    console.log(this.id);
-                    var text = document.getElementById(this.id).value;
-                    console.log(text);
-                    $('#text-widget-' + this.id.match(/\d+$/i)).text(text);
-                });
-
-                $(document).on('click', 'div[id^="bold-text-operator-"]', function() {
-                    var textWidget = $('#text-widget-' + this.id.match(/\d+$/i));
-                    var fontWeight = textWidget.css('font-weight');
-                    console.log(fontWeight);
-                    if (fontWeight  == 'normal' || fontWeight  == '400') {
-                        textWidget.css("font-weight", "bold");
-                    } else {
-                        textWidget.css("font-weight", "normal");
-                    }
-                });
-
-                $(document).on('click', 'div[id^="italic-text-operator-"]', function() {
-                    var textWidget = $('#text-widget-' + this.id.match(/\d+$/i));
-                    var fontStyle = textWidget.css('font-style');
-                    console.log(fontStyle);
-                    if (fontStyle  == 'normal') {
-                        textWidget.css("font-style", "italic");
-                    } else {
-                        textWidget.css("font-style", "normal");
-                    }
-                });
-
-                $(document).on('click', 'div[id^="justify-text-operator-"]', function() {
-                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "justify");
-                });
-
-                $(document).on('click', 'div[id^="center-text-operator-"]', function() {
-                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "center");
-                });
-
-                $(document).on('click', 'div[id^="left-text-operator-"]', function() {
-                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "left");
-                });
-
-                $(document).on('click', 'div[id^="right-text-operator-"]', function() {
-                    $('#text-widget-' + this.id.match(/\d+$/i)).css("text-align", "right");
-                });
-
-                $(document).on('input change', 'input[id^="scale-text-"]', function() {
-                    console.log(this.id);
-                    var newSize = document.getElementById(this.id).value;
-                    $('#text-widget-' + this.id.match(/\d+$/i)).css("font-size", newSize + "pt");
-                });
-
-                $(document).on('click', 'input[id^="btn-add-text-widget-row-"]', function() {
-                    console.log(this.id);
-                    const textWidget = document.createElement('p');
-                    textWidget.setAttribute("id", "text-widget-" + textWidgetsCounter);
-                    document.getElementById('row-widget-'+this.id.match(/\d+$/i)).appendChild(textWidget);
-
-                    const textWidgetController = document.createElement('div');
-                    textWidgetController.setAttribute("id", "text-widget-controller-options-" + textWidgetsCounter);
-                    textWidgetController.className = 'text-widget-controller';
-                    textWidgetController.innerHTML = `
-                        <div>
-                            <div>
-                                <div>
-                                    <div class="controller-menu">
-                                        <div>
-                                            <h1>Text widget #`+textWidgetsCounter+`</h1>
-                                        </div>
-                                        <input id='btn-remove-text-`+textWidgetsCounter+`' type='button' value='Remove widget'/>
-                                    </div>
-                                    <div class="text-controller-options">
-                                        <div class="text-style-options">
-                                            <div id="bold-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-bold"></i></div>
-                                            <div id="italic-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-italic"></i></div>
-                                            <div id="justify-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-justify"></i></div>
-                                            <div id="center-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-center"></i></div>
-                                            <div id="left-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-left"></i></div>
-                                            <div id="right-text-operator-`+textWidgetsCounter+`" class="text-button"><i class="fa fa-align-right"></i></div>
-                                            <input type="range" id="scale-text-`+textWidgetsCounter+`" name="scale-text" min="2" max="10" value="4" step="2">
-                                        </div>
-                                        <textarea 
-                                            id="textarea-widget-`+(textWidgetsCounter++)+`" 
-                                            name="text" 
-                                            placeholder="Type here widget text"
-                                            rows="4"
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    console.log('row-widget-controller-options-'+this.id.match(/\d+$/i));
-                    document.getElementById('row-widget-controller-options-'+this.id.match(/\d+$/i)).appendChild(textWidgetController);
-                });
-
-/*
-                $('input[id^="btn-"').click(function() {
-                    console.log(this.id);
-                    console.log("HELLO");
-                    return this.id.match(/abc+d/);
-                }).html("Matched!");*/
-    /*.click(function () {
-                    console.log("Remove row widget");
-                    console.log($(this));
-                    addRowWidget();
-                });*/
             }
-
         </script>
     </head>
 
