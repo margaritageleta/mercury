@@ -1,4 +1,4 @@
-function addRowWidget(globals) {
+function addRowWidget(globals, rootWidget = null, rootWidgetId = null) {
 
     const widget = document.createElement('div');
     widget.setAttribute("id", "row-widget-" + globals.rowWidgetsCounter);
@@ -6,11 +6,26 @@ function addRowWidget(globals) {
 
     widget.className = 'row-widget';
     widget.innerHTML = `<div id="row-widget-content-`+globals.rowWidgetsCounter+`"></div>`;
-    document.getElementById('content__page_1').appendChild(widget);
+    if (rootWidget == 'splitter') {
+        document.getElementById('splitter-widget-' + rootWidgetId).appendChild(widget);
+    } else {
+        document.getElementById('content__page_1').appendChild(widget);
+    }
 
     const widgetController = document.createElement('div');
     widgetController.setAttribute("id", "row-widget-controller-" + globals.rowWidgetsCounter);
     widgetController.className = 'row-widget-controller';
+    widgetControllerMenu = ''
+    if (rootWidget == null) {
+        widgetControllerMenu = `
+        <div id='btn-minimize-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-minus minus"></i></div>
+        <div id='btn-remove-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-times times"></i></div>
+        `
+    } else {
+        widgetControllerMenu = `
+        <div id='btn-minimize-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-minus minus"></i></div>
+        `
+    }
     widgetController.innerHTML = `<div>
         <div>
             <div>
@@ -19,8 +34,7 @@ function addRowWidget(globals) {
                         <h1>Row widget `+globals.rowWidgetsCounter+`</h1>
                     </div>
                     <div style="display: flex; width: max-content; flex-direction: row;">
-                        <div id='btn-minimize-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-minus minus"></i></div>
-                        <div id='btn-remove-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-times times"></i></div>
+                        `+ widgetControllerMenu +`
                     </div>
                 </div>
                 <div class="row-controller-options row-subwidget-visible-`+globals.rowWidgetsCounter+`">
@@ -45,20 +59,23 @@ function addRowWidget(globals) {
                         </div>
                     </div>
                 </div>
-                <div id="row-widget-controller-options-` + globals.rowWidgetsCounter+`" class="controller-options row-subwidget-visible-`+globals.rowWidgetsCounter+`">
+                <div id="row-widget-controller-options-` + globals.rowWidgetsCounter+`" class="row-subwidget-visible-`+globals.rowWidgetsCounter+`">
                     
                 </div>
                 <div style="width: 100%; display: flex; justify-content: center;" class="row-subwidget-visible-`+globals.rowWidgetsCounter+`">
                         <input id="btn-add-text-widget-row-`+globals.rowWidgetsCounter+`" type="button" value="Add text element"/>
-                        <input id="btn-add-splitter-row-`+globals.rowWidgetsCounter+`" type="button" value="Add splitter"/>
+                        <input id="btn-add-splitter-widget-row-`+globals.rowWidgetsCounter+`" type="button" value="Add splitter"/>
                         <input id="btn-add-image-widget-row-`+(globals.rowWidgetsCounter++)+`" type="button" value="Add image"/>
                 </div>
             </div>
         </div>
     </div>`;
 
-    document.getElementById('widgets-controllers').appendChild(widgetController);
-
+    if (rootWidget == 'splitter') {
+        document.getElementById('splitter-widget-controller-options-' + rootWidgetId).appendChild(widgetController);
+    } else {
+        document.getElementById('widgets-controllers').appendChild(widgetController);
+    }
 }
 
 function removeRow(id) {
