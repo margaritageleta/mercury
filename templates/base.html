@@ -18,16 +18,17 @@
         crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-        <script type="text/javascript" src="/js/globalControllers.js"></script>
         <script type="text/javascript" src="/js/rowWidget.js"></script>
         <script type="text/javascript" src="/js/textWidget.js"></script>
+        <script type="text/javascript" src="/js/splitterWidget.js"></script>
         <script type="text/javascript">
 
             // Global vars to keep track of the number of widgets created 
             // and their identifiers
             var globals = {
                 rowWidgetsCounter : 1,
-                textWidgetsCounter : 1
+                textWidgetsCounter : 1,
+                splitterWidgetsCounter : 1
             }
 
             window.onload = () => {
@@ -247,6 +248,31 @@
                             document.getElementById(id).firstChild.classList.add('fa-plus');
                         }
                     });
+                });
+
+                /* Functions regarding spliiter widgets */
+    
+                // Add splitter element button trigger
+                $(document).on('click', 'input[id^="btn-add-splitter-widget-row-"]', function() {
+                    addSplitterWidget(this.id.match(/\d+$/i), globals);
+                    addRowWidget(globals, rootWidget = 'splitter', rootWidgetId = (globals.splitterWidgetsCounter - 1));
+                    addRowWidget(globals, rootWidget = 'splitter', rootWidgetId = (globals.splitterWidgetsCounter - 1));
+                });
+
+                // Slider to change the gap
+                $(document).on('input change', 'input[id^="slider-splitter-gap-"]', function() {
+                    var newGap = document.getElementById(this.id).value;
+                    var splitterWidget = $('#splitter-widget-' + this.id.match(/\d+$/i));
+                    splitterWidget.css( "grid-gap", newGap + 'px');
+                });
+
+                $(document).on('input change', 'input[id^="slider-splitter-division-"]', function() {
+                    var newPercentage = document.getElementById(this.id).value / 100;
+                    var splitterWidget = $('#splitter-widget-' + this.id.match(/\d+$/i));
+                    var currentCSS = splitterWidget.css( "grid-template-columns");
+                    console.log(currentCSS);
+                    console.log("grid-template-columns", newPercentage + 'fr ' + (1 - newPercentage) + 'fr');
+                    splitterWidget.css( "grid-template-columns", newPercentage + 'fr ' + (1 - newPercentage) + 'fr');
                 });
             }
         </script>
