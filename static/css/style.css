@@ -167,13 +167,14 @@ main > div:last-child p {
     grid-row-end: ini;
     grid-row-end: end;
     width: 100%;
-    height: inherit - var(--margin); /* hackerman */
+    height: inherit - (2 * var(--margin)); /* hackerman */
     border:0.5pt solid lightgrey;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     font-size: 4pt;
     white-space: pre-line;
+    overflow: hidden;
 }
 
 .page-wrapper {
@@ -232,7 +233,7 @@ main > div:last-child p {
     transition: background-color 0.5s ease-out;
 }
 
-.row-widget-controller, .splitter-widget-controller {
+.row-widget-controller, .splitter-widget-controller, .page-controller {
     width: 100%;
     height: max-content;
     display: grid;
@@ -252,7 +253,7 @@ main > div:last-child p {
     background-color: lightyellow;
 }
 
-.row-widget-controller > div, .splitter-widget-controller > div {
+.row-widget-controller > div, .splitter-widget-controller > div, .page-controller > div {
     width: 100%;
     grid-column-start: ini;
     grid-column-end: end;
@@ -272,7 +273,7 @@ main > div:last-child p {
     transition: background-color 0.5s ease-out;
 }
 
-.row-widget-controller > div > div, .splitter-widget-controller > div > div {
+.row-widget-controller > div > div, .splitter-widget-controller > div > div, .page-controller > div > div {
     width: 100%;
     grid-column-start: ini;
     grid-column-end: end;

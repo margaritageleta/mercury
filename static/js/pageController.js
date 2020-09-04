@@ -12,14 +12,14 @@ function addPage(globals) {
 
     const pageController = document.createElement('div');
     pageController.setAttribute("id", "page-controller-" + globals.pagesCounter);
-    pageController.className = 'text-widget-controller';
+    pageController.className = 'page-controller';
     pageController.innerHTML = `
         <div>
             <div>
                 <div>
                     <div class="controller-menu">
                         <div>
-                            <h1>Page widget `+globals.pagesCounter+`</h1>
+                            <h1>Page `+globals.pagesCounter+`</h1>
                         </div>
                         <div style="display: flex; width: max-content; flex-direction: row;">
                             <div id='btn-minimize-text-`+globals.pagesCounter+`' class="controller-menu-button"><i class="fa fa-minus minus"></i></div>

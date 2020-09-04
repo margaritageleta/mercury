@@ -238,7 +238,6 @@
                 });
 
                 $(document).on('mouseout', 'div[id^="text-widget-controller-"]', function() {
-                    console.log(this.id);
                     var widget = document.getElementById('text-widget-' + this.id.match(/\d+$/i));
                     widget.style.backgroundColor = 'transparent';
                 });
