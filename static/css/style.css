@@ -232,7 +232,7 @@ main > div:last-child p {
     transition: background-color 0.5s ease-out;
 }
 
-.row-widget-controller {
+.row-widget-controller, .splitter-widget-controller {
     width: 100%;
     height: max-content;
     display: grid;
@@ -248,7 +248,11 @@ main > div:last-child p {
     background-color: lightskyblue;
 }
 
-.row-widget-controller > div {
+.splitter-widget-controller > div:hover {
+    background-color: lightyellow;
+}
+
+.row-widget-controller > div, .splitter-widget-controller > div {
     width: 100%;
     grid-column-start: ini;
     grid-column-end: end;
@@ -268,7 +272,7 @@ main > div:last-child p {
     transition: background-color 0.5s ease-out;
 }
 
-.row-widget-controller > div > div {
+.row-widget-controller > div > div, .splitter-widget-controller > div > div {
     width: 100%;
     grid-column-start: ini;
     grid-column-end: end;
@@ -282,7 +286,13 @@ main > div:last-child p {
     grid-template-rows: 1fr 1fr;
 }
 
-.row-controller-options > div {
+.splitter-controller-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.row-controller-options > div, .splitter-controller-options > div:first-child {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
@@ -290,20 +300,20 @@ main > div:last-child p {
     column-gap: 10px;
 }
 
-.row-controller-options > div > div {
+.row-controller-options > div > div, .splitter-controller-options > div:first-child > div {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     grid-template-rows: 1fr;
     margin: 2px;
 }
 
-.row-controller-options label {
+.row-controller-options label, .splitter-controller-options label {
     align-self: center;
     font-weight: 400;
     font-size: 14px;
 }
 
-.row-controller-options input {
+.row-controller-options input, .splitter-controller-options input {
     width: 100%;
 }
 
@@ -413,7 +423,7 @@ textarea {
     color: darkred;
 }
 
-[class*="row-not-visible-"] {
+[class*="row-not-visible-"], [class*="text-not-visible-"] {
     display: none !important;
 }
 
@@ -424,6 +434,17 @@ input[name="scale-text"] {
 .widgets-controllers-container {
     display: flex; 
     flex-direction: column;
+}
+
+[id^="splitter-widget-controller-options-"] {
+    display: flex;
+    flex-direction: column;
+}
+
+.splitter-widget {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
 }
 
 p, h1 {
