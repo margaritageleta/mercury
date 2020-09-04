@@ -9,14 +9,15 @@ function addRowWidget(globals, rootWidget = null, rootWidgetId = null) {
     if (rootWidget == 'splitter') {
         document.getElementById('splitter-widget-' + rootWidgetId).appendChild(widget);
     } else {
-        document.getElementById('content__page_1').appendChild(widget);
+        console.log('content__page_'+ rootWidgetId);
+        document.getElementById('content__page_'+ rootWidgetId).appendChild(widget);
     }
 
     const widgetController = document.createElement('div');
     widgetController.setAttribute("id", "row-widget-controller-" + globals.rowWidgetsCounter);
     widgetController.className = 'row-widget-controller';
     widgetControllerMenu = ''
-    if (rootWidget == null) {
+    if (rootWidget != 'splitter') {
         widgetControllerMenu = `
         <div id='btn-minimize-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-minus minus"></i></div>
         <div id='btn-remove-row-`+globals.rowWidgetsCounter+`' class="controller-menu-button"><i class="fa fa-times times"></i></div>
@@ -74,7 +75,7 @@ function addRowWidget(globals, rootWidget = null, rootWidgetId = null) {
     if (rootWidget == 'splitter') {
         document.getElementById('splitter-widget-controller-options-' + rootWidgetId).appendChild(widgetController);
     } else {
-        document.getElementById('widgets-controllers').appendChild(widgetController);
+        document.getElementById('page-controllers-' + rootWidgetId).appendChild(widgetController);
     }
 }
 
