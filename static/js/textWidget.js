@@ -57,8 +57,14 @@ function removeTextWidget(id) {
     $(document).on('input', 'textarea[id^="textarea-widget-"]', function() {
         console.log(this.id);
         var text = document.getElementById(this.id).value;
-        console.log(text);
-        $('#text-widget-' + this.id.match(/\d+$/i)).text(text);
+        var textWidget = $('#text-widget-' + this.id.match(/\d+$/i));
+        textWidget.text(text);
+        // Check if it overflows
+        console.log(textWidget.height());
+        console.log($('#content__page_1').height());
+        if (textWidget.height() > $('#content__page_1').height()) {
+            console.log("TEXT IS OVERFLOWING!");
+        }
     });
 
     $(document).on('click', 'div[id^="bold-text-operator-"]', function() {
