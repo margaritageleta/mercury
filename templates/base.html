@@ -259,6 +259,10 @@
                     addRowWidget(globals, rootWidget = 'splitter', rootWidgetId = (globals.splitterWidgetsCounter - 1));
                 });
 
+                $(document).on('click', 'div[id^="btn-remove-splitter-"]', function() {
+                    removeSplitter(this.id.match(/\d+$/i));
+                });
+
                 // Slider to change the gap
                 $(document).on('input change', 'input[id^="slider-splitter-gap-"]', function() {
                     var newGap = document.getElementById(this.id).value;
@@ -274,6 +278,27 @@
                     console.log("grid-template-columns", newPercentage + 'fr ' + (1 - newPercentage) + 'fr');
                     splitterWidget.css( "grid-template-columns", newPercentage + 'fr ' + (1 - newPercentage) + 'fr');
                 });
+
+                // Minimize a splitter widget
+                $(document).on('click', 'div[id^="btn-minimize-splitter-"]', function() {
+                    var id = this.id;
+                    // Change display styles for each subwidget
+                    $('.splitter-subwidget-visible-' + id.match(/\d+$/i)).each(function() {
+                        if ($(this).hasClass('splitter-not-visible-' + id.match(/\d+$/i))) {
+                            $(this).removeClass('splitter-not-visible-' + id.match(/\d+$/i));
+                            // Change sign icon
+                            document.getElementById(id).firstChild.classList.remove('fa-plus');
+                            document.getElementById(id).firstChild.classList.add('fa-minus');
+
+                        } else {
+                            $(this).addClass('splitter-not-visible-' + id.match(/\d+$/i));
+                            // Change sign icon
+                            document.getElementById(id).firstChild.classList.remove('fa-minus');
+                            document.getElementById(id).firstChild.classList.add('fa-plus');
+                        }
+                    });
+                });
+
             }
         </script>
     </head>

@@ -31,7 +31,7 @@ function addSplitterWidget(rowId, globals) {
                                 <input id="slider-splitter-gap-`+globals.splitterWidgetsCounter+`" type="range" name="slider-splitter-gap-`+globals.splitterWidgetsCounter+`" min="0" max="50" value="0" step="1"/>
                             </div>
                         </div>
-                        <div id="splitter-widget-controller-options-` + globals.splitterWidgetsCounter+`" class="splitter-subwidget-visible-`+globals.splitterWidgetsCounter+`">
+                        <div id="splitter-widget-controller-options-` + globals.splitterWidgetsCounter+`">
                     
                         </div>
                     </div>
@@ -41,4 +41,9 @@ function addSplitterWidget(rowId, globals) {
     `;
     globals.splitterWidgetsCounter++;
     document.getElementById('row-widget-controller-options-'+rowId).appendChild(splitterWidgetController);
+}
+
+function removeSplitter(id) {
+    document.getElementById("splitter-widget-" + id).remove();
+    document.getElementById("splitter-widget-controller-" + id).remove();
 }

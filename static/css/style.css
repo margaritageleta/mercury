@@ -423,7 +423,7 @@ textarea {
     color: darkred;
 }
 
-[class*="row-not-visible-"], [class*="text-not-visible-"] {
+[class*="row-not-visible-"], [class*="text-not-visible-"], [class*="splitter-not-visible-"] {
     display: none !important;
 }
 
