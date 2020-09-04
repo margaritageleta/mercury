@@ -14,6 +14,9 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
 def home():
     return render_template('base.html')
+@app.route('/page')
+def page():
+    return render_template('page.html')
 
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True

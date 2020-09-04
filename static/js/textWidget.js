@@ -58,6 +58,7 @@ function removeTextWidget(id) {
         // Update text
         var text = document.getElementById(this.id).value;
         var textWidget = $('#text-widget-' + this.id.match(/\d+$/i));
+        var textareaWidget = $('#textarea-widget-' + this.id.match(/\d+$/i));
         textWidget.text(text);
 
         // Find id of current page
@@ -75,42 +76,52 @@ function removeTextWidget(id) {
         var textNextPage = [];
         // if it overflows it means that the last widget is overflowing
         var lastTextWidget = $('#content__page_' + pageId).find('.text-widget').last();
+        // Split text
+        var textOverflowed = lastTextWidget.text().split(' ');
 
         // Check whether it overflows
         if (widgetsOnPageHeight > contentPageHeight) {
             while (widgetsOnPageHeight > contentPageHeight) {
                 console.log("TEXT IS OVERFLOWING!");
                 widgetsOnPageHeight -= lastTextWidget.height();
-
-                // Split text
-                var textOverflowed = lastTextWidget.text().split(' ');
+                
                 // Pop last char
                 var lastChar = textOverflowed.pop();
                 textNextPage.unshift(lastChar);
+
                 // Join text after pop
                 lastTextWidget.text(textOverflowed.join(' '));
                 widgetsOnPageHeight += lastTextWidget.height();
+
+                var textCurrentPageAsText = textOverflowed.join(' ');
+                var textNextPageAsText = textNextPage.join(' ');
                 
                 // Decide where to place next text
                 if (document.getElementById('content__page_' + (parseInt(pageId) + 1))) {
                     // This page exists, find text widget there
-                    var textId = $('#content__page_' + (parseInt(pageId) + 1)).find('.text-widget').first().attr('id').match(/\d+$/i)[0];
+                    // TODO find first bonded
+                    // TODO if there is no text widget
+                    var firstTextWidget = $('#content__page_' + (parseInt(pageId) + 1)).find('.text-widget').first();
+                    var firstTextWidgetId = firstTextWidget.attr('id').match(/\d+$/i)[0];
+
+                    var nextTextWidget = $('#text-widget-' + firstTextWidgetId);
+                    var nextTextareaWidget = $('#textarea-widget-' + firstTextWidgetId);
+
+                    var currTextWidget = $('#text-widget-' + lastTextWidget.attr('id').match(/\d+$/i)[0]); 
+                    var currTextareaWidget = $('#textarea-widget-' + lastTextWidget.attr('id').match(/\d+$/i)[0]); 
                 
                     // Append new text 
                     console.log("IF CASE");
-                    console.log($('#text-widget-' + textId).text());
-                    console.log('textarea-widget-' + textId + ' ===> ' + lastChar + ' ' + $('#text-widget-' + textId).text());
-                    $('#textarea-widget-' + textId).val(lastChar + ' ' + $('#text-widget-' + textId).text());
-                    $('#textarea-widget-' + textId).focus();
-                    console.log(textNextPage.length);
-                    console.log(textNextPage.join('').length);
-                    $('#textarea-widget-' + textId).prop('selectionEnd', textNextPage.join(' ').length);
-                    $('#text-widget-' + textId).text(lastChar + ' '+ $('#text-widget-' + textId).text());
+
+                    nextTextareaWidget.val(lastChar + ' ' + nextTextWidget.text());
+                    nextTextareaWidget.focus();
+                    nextTextareaWidget.prop('selectionEnd', textNextPageAsText.length);
+                    nextTextWidget.text(lastChar + ' '+ nextTextWidget.text());
 
                     // Delete text from first textarea
-                    console.log('textarea-widget-' + textWidget.attr('id').match(/\d+$/i)[0] + ' ===> ' + textOverflowed.join(' '));
-                    $('#textarea-widget-' + textWidget.attr('id').match(/\d+$/i)[0]).val(textOverflowed.join(' '));
-                    $('#text-widget-' + textWidget.attr('id').match(/\d+$/i)[0]).text(textOverflowed.join(' '));
+                    currTextareaWidget.val(textCurrentPageAsText);
+                    currTextWidget.text(textCurrentPageAsText);
+
                 } else {
                     // Next page does not exist, add page
                     addPage(globals);
@@ -119,21 +130,20 @@ function removeTextWidget(id) {
                     // Add inside text widget
                     addTextWidget((globals.rowWidgetsCounter - 1), globals);
                     // Bond it
-                    console.log('#text-widget-' + (globals.textWidgetsCounter - 1));
-                    $('#text-widget-' + (globals.textWidgetsCounter - 1)).addClass('bonded');
-                    // Append new text 
-                    console.log("ELSE CASE");
-                    console.log('textarea-widget-' + (globals.textWidgetsCounter - 1) + ' ===> ' + textNextPage.join(' '));
-                    $('#textarea-widget-' + (globals.textWidgetsCounter - 1)).val(textNextPage.join(' '));
-                    $('#textarea-widget-' + (globals.textWidgetsCounter - 1)).focus();
-                    console.log(textNextPage.length);
-                    //$('#textarea-widget-' + (globals.textWidgetsCounter - 1)).prop('selectionEnd', textNextPage.length);
-                    $('#text-widget-' + (globals.textWidgetsCounter - 1)).text(textNextPage.join(' '));
+                    var nextTextWidget = $('#text-widget-' + (globals.textWidgetsCounter - 1));
+                    var nextTextareaWidget = $('#textarea-widget-' + (globals.textWidgetsCounter - 1));
+                    nextTextWidget.addClass('bonded');
+
+                    // Update textarea value and focus on it at the end
+                    nextTextareaWidget.val(textNextPageAsText);
+                    nextTextareaWidget.focus();
+
+                    // Update text widget
+                    nextTextWidget.text(textNextPageAsText);
 
                     // Delete text from first textarea
-                    console.log('textarea-widget-' + textWidget.attr('id').match(/\d+$/i)[0] + ' ===> ' + textOverflowed.join(' '));
-                    $('#textarea-widget-' + textWidget.attr('id').match(/\d+$/i)[0]).val(textOverflowed.join(' '));
-                    $('#text-widget-' + textWidget.attr('id').match(/\d+$/i)[0]).text(textOverflowed.join(' '));
+                    textareaWidget.val(textCurrentPageAsText);
+                    textWidget.text(textCurrentPageAsText);
                 }
             }
         }/*
