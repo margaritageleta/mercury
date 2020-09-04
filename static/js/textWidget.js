@@ -45,10 +45,13 @@ function addTextWidget(rowId, globals) {
     document.getElementById('row-widget-controller-options-'+rowId).appendChild(textWidgetController);
 }
 
+function removeTextWidget(id) {
+    document.getElementById("text-widget-" + id).remove();
+    document.getElementById("text-widget-controller-options-" + id).remove();
+}
 
     $(document).on('click', 'div[id^="btn-remove-text-"]', function() {
-        document.getElementById("text-widget-" + this.id.match(/\d+$/i)).remove();
-        document.getElementById("text-widget-controller-options-" + this.id.match(/\d+$/i)).remove();
+        removeTextWidget(this.id.match(/\d+$/i));
     });
 
     $(document).on('input', 'textarea[id^="textarea-widget-"]', function() {
